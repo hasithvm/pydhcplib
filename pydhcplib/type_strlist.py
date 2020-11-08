@@ -1,3 +1,5 @@
+from six.moves import map
+from six.moves import range
 # pydhcplib
 # Copyright (C) 2008 Mathieu Ignacio -- mignacio@april.org
 #
@@ -28,7 +30,7 @@ class strlist :
         elif str_type == list :
             self._list = data
             self._str = "".join(map(chr,self._list))
-        else : raise TypeError , 'strlist init : Valid types are str and  list of int'
+        else : raise TypeError('strlist init : Valid types are str and  list of int')
 
     # return string
     def str(self) :

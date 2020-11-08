@@ -15,15 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import operator
 from struct import unpack
 from struct import pack
-from dhcp_basic_packet import *
-from dhcp_constants import *
-from type_ipv4 import ipv4
-from type_strlist import strlist
-from type_hwmac import hwmac
+from .dhcp_basic_packet import *
+from .dhcp_constants import *
+from .type_ipv4 import ipv4
+from .type_strlist import strlist
+from .type_hwmac import hwmac
 import sys
+from six.moves import map
+from six.moves import range
 
 class DhcpPacket(DhcpBasicPacket):
     def str(self):
@@ -143,7 +146,7 @@ class DhcpPacket(DhcpBasicPacket):
         elif p == 'chaddr' :
             try:
                 value = hwmac(value).list()+[0]*10
-            except ValueError,TypeError :
+            except ValueError as TypeError :
                 value = [0]*16
             return value
             
@@ -155,7 +158,7 @@ class DhcpPacket(DhcpBasicPacket):
             value = value.strip().split(',')
             tmp = []
             for each in value:
-                if DhcpOptions.has_key(each) : tmp.append(DhcpOptions[each])
+                if each in DhcpOptions : tmp.append(DhcpOptions[each])
             return tmp
         elif  p=='dhcp_message_type' :
             try :
@@ -170,7 +173,7 @@ class DhcpPacket(DhcpBasicPacket):
         if option_type == "ipv4" :
             # this is a single ip address
             try :
-                binary_value = map(int,value.split("."))
+                binary_value = list(map(int,value.split(".")))
             except ValueError : return False
             
         elif option_type == "ipv4+" :

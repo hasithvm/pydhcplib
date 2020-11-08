@@ -15,8 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import sys
-import dhcp_packet
+from . import dhcp_packet
 import IN
 
 class DhcpFileIO() :
@@ -61,10 +62,10 @@ class DhcpStdOut(DhcpFileIO) :
 
 class DhcpFileOut(DhcpFileIO) :
     def __init__(self,filename) :
-        self.filedesc = file(filename, 'w')
+        self.filedesc = open(filename, 'w')
         self.EnableBinaryTransport()
 
 class DhcpFileIn(DhcpFileIO) :
     def __init__(self,filename) :
-        self.filedesc = file(filename, 'r')
+        self.filedesc = open(filename, 'r')
         self.EnableBinaryTransport()

@@ -9,11 +9,13 @@
 # option) any later version. Please read the COPYING file.
 #
 
+from __future__ import absolute_import
 import os
 import array
 import fcntl
 import struct
 import socket
+from six.moves import range
 
 class interface:
     """ ioctl stuff """

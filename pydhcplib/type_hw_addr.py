@@ -17,4 +17,5 @@
 
 
 # Temporarily needed for backward compatibilities.
+from __future__ import absolute_import
 from pydhcplib.type_hwmac import *

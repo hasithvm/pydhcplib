@@ -15,11 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import operator
 from struct import unpack
 from struct import pack
-from dhcp_constants import *
+from .dhcp_constants import *
 import sys
+from six.moves import map
 
 
 # DhcpPacket : base class to encode/decode dhcp packets.
@@ -48,7 +50,7 @@ class DhcpBasicPacket:
     def DeleteOption(self,name):
         # if name is a standard dhcp field
         # Set field to 0
-        if DhcpFields.has_key(name) :
+        if name in DhcpFields :
             begin = DhcpFields[name][0]
             end = DhcpFields[name][0]+DhcpFields[name][1]
             self.packet_data[begin:end] = [0]*DhcpFields[name][1]
@@ -56,7 +58,7 @@ class DhcpBasicPacket:
 
         # if name is a dhcp option
         # delete option from self.option_data
-        elif self.options_data.has_key(name) :
+        elif name in self.options_data :
             # forget how to remove a key... try delete
             self.options_data.__delitem__(name)
             return True
@@ -64,11 +66,11 @@ class DhcpBasicPacket:
         return False
 
     def GetOption(self,name):
-        if DhcpFields.has_key(name) :
+        if name in DhcpFields :
             option_info = DhcpFields[name]
             return self.packet_data[option_info[0]:option_info[0]+option_info[1]]
 
-        elif self.options_data.has_key(name) :
+        elif name in self.options_data :
             return self.options_data[name]
 
         return []
@@ -80,7 +82,7 @@ class DhcpBasicPacket:
         # has value list a correct length
         
         # if name is a standard dhcp field
-        if DhcpFields.has_key(name) :
+        if name in DhcpFields :
             if len(value) != DhcpFields[name][1] :
                 sys.stderr.write( "pydhcplib.dhcp_basic_packet.setoption error, bad option length : "+name)
                 return False
@@ -90,7 +92,7 @@ class DhcpBasicPacket:
             return True
 
         # if name is a dhcp option
-        elif DhcpOptions.has_key(name) :
+        elif name in DhcpOptions :
 
             # fields_specs : {'option_code':fixed_length,minimum_length,multiple}
             # if fixed_length == 0 : minimum_length and multiple apply
@@ -118,8 +120,8 @@ class DhcpBasicPacket:
 
 
     def IsOption(self,name):
-        if self.options_data.has_key(name) : return True
-        elif DhcpFields.has_key(name) : return True
+        if name in self.options_data : return True
+        elif name in DhcpFields : return True
         else : return False
 
     # Encode Packet and return it
@@ -142,7 +144,7 @@ class DhcpBasicPacket:
         packet.append(255) # add end option
         pack_fmt = str(len(packet))+"c"
 
-        packet = map(chr,packet)
+        packet = list(map(chr,packet))
         
         return pack(pack_fmt,*packet)
 
@@ -178,7 +180,7 @@ class DhcpBasicPacket:
                 self.packet_data = self.packet_data[:240] # base packet length without magic cookie
                 return
                 
-            elif DhcpOptionsTypes.has_key(self.packet_data[iterator]) and self.packet_data[iterator]!= 255:
+            elif self.packet_data[iterator] in DhcpOptionsTypes and self.packet_data[iterator]!= 255:
                 opt_len = self.packet_data[iterator+1]
                 opt_first = iterator+1
                 self.options_data[DhcpOptionsList[self.packet_data[iterator]]] = self.packet_data[opt_first+1:opt_len+opt_first+1]

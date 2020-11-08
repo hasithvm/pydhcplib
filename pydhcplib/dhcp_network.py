@@ -15,10 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import sys
 import socket
 import select
-import dhcp_packet
+from . import dhcp_packet
 import IN
 
 class DhcpNetwork:
@@ -35,19 +36,19 @@ class DhcpNetwork:
     def CreateSocket(self) :
         try :
             self.dhcp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write('pydhcplib.DhcpNetwork socket creation error : '+str(msg))
 
         try :
             if self.so_broadcast :
                 self.dhcp_socket.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1)
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write('pydhcplib.DhcpNetwork socket error in setsockopt SO_BROADCAST : '+str(msg))
 
         try : 
             if self.so_reuseaddr :
                 self.dhcp_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write('pydhcplib.DhcpNetwork socket error in setsockopt SO_REUSEADDR : '+str(msg))
         
     def EnableReuseaddr(self) :
@@ -65,18 +66,18 @@ class DhcpNetwork:
     def BindToDevice(self) :
         try :
             self.dhcp_socket.setsockopt(socket.SOL_SOCKET,IN.SO_BINDTODEVICE,self.listen_address+'\0')
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write ('pydhcplib.DhcpNetwork.BindToDevice error in setsockopt SO_BINDTODEVICE : '+str(msg))
 
         try :
             self.dhcp_socket.bind(('', self.listen_port))
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpNetwork.BindToDevice error : '+str(msg))
 
     def BindToAddress(self) :
         try :
             self.dhcp_socket.bind((self.listen_address, self.listen_port))
-        except socket.error,msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpNetwork.BindToAddress error : '+str(msg))
 
 
@@ -186,25 +187,25 @@ class DhcpClientOld(DhcpNetwork) :
 
         try :
             self.dhcp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpClient socket creation error : '+str(msg))
 
         try :
             self.dhcp_socket.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1)
             self.dhcp_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpClient socket error in setsockopt SO_BROADCAST or SO_REUSEADDR : '+str(msg))
 
 
     def BindToDevice(self) :
         try :
             self.dhcp_socket.setsockopt(socket.SOL_SOCKET,IN.SO_BINDTODEVICE,self.listen_address+'\0')
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpClient socket error in setsockopt SO_BINDTODEVICE : '+str(msg))
 
         try :
             self.dhcp_socket.bind(('', self.listen_port))
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpClient bind error : '+str(msg))
 
             
@@ -212,7 +213,7 @@ class DhcpClientOld(DhcpNetwork) :
     def BindToAddress(self) :
         try :
             self.dhcp_socket.bind((self.listen_address, self.listen_port))
-        except socket.error,msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpClient bind error : '+str(msg))
 
 
@@ -223,17 +224,17 @@ class DhcpServerOld(DhcpNetwork) :
         
         try :
             self.dhcp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpServer socket creation error : '+str(msg))
 
         try:
             self.dhcp_socket.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1)
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpServer socket error in setsockopt SO_BROADCAST : '+str(msg))
 
         try :
             self.dhcp_socket.bind((self.listen_address, self.listen_port))
-        except socket.error, msg :
+        except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpServer bind error : '+str(msg))
 
 
