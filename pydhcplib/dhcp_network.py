@@ -65,7 +65,7 @@ class DhcpNetwork:
 
     def BindToDevice(self) :
         try :
-            self.dhcp_socket.setsockopt(socket.SOL_SOCKET,25,self.listen_address+'\0')
+            self.dhcp_socket.setsockopt(socket.SOL_SOCKET,25,self.listen_address.encode('UTF-8'))
         except socket.error as msg :
             sys.stderr.write ('pydhcplib.DhcpNetwork.BindToDevice error in setsockopt SO_BINDTODEVICE : '+str(msg))
 
