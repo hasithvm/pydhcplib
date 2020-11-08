@@ -31,7 +31,7 @@ class DhcpNetwork:
         self.so_reuseaddr = False
         self.so_broadcast = True
         self.dhcp_socket = None
-        
+
     # Networking stuff
     def CreateSocket(self) :
         try :
@@ -50,7 +50,7 @@ class DhcpNetwork:
                 self.dhcp_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         except socket.error as msg :
             sys.stderr.write('pydhcplib.DhcpNetwork socket error in setsockopt SO_REUSEADDR : '+str(msg))
-        
+
     def EnableReuseaddr(self) :
         self.so_reuseaddr = True
 
@@ -86,7 +86,7 @@ class DhcpNetwork:
 
 
         while data == "" :
-            
+
             data_input,data_output,data_except = select.select([self.dhcp_socket],[],[],timeout)
 
             if( data_input != [] ) : (data,source_address) = self.dhcp_socket.recvfrom(2048)
@@ -98,7 +98,7 @@ class DhcpNetwork:
                 packet.DecodePacket(data)
 
                 self.HandleDhcpAll(packet)
-                
+
                 if packet.IsDhcpDiscoverPacket():
                     self.HandleDhcpDiscover(packet)
                 elif packet.IsDhcpRequestPacket():
@@ -124,10 +124,10 @@ class DhcpNetwork:
 
     # Server side Handle methods
     def HandleDhcpDiscover(self, packet):
-	pass
+        pass
 
     def HandleDhcpRequest(self, packet):
-	pass
+        pass
 
     def HandleDhcpDecline(self, packet):
         pass
@@ -142,7 +142,7 @@ class DhcpNetwork:
     # client-side Handle methods
     def HandleDhcpOffer(self, packet):
         pass
-        
+
     def HandleDhcpAck(self, packet):
         pass
 
@@ -160,7 +160,7 @@ class DhcpNetwork:
 
 class DhcpServer(DhcpNetwork) :
     def __init__(self, listen_address="0.0.0.0", client_listen_port=68,server_listen_port=67) :
-        
+
         DhcpNetwork.__init__(self,listen_address,server_listen_port,client_listen_port)
 
         self.EnableBroadcast()
@@ -171,7 +171,7 @@ class DhcpServer(DhcpNetwork) :
 
 class DhcpClient(DhcpNetwork) :
     def __init__(self, listen_address="0.0.0.0", client_listen_port=68,server_listen_port=67) :
-        
+
         DhcpNetwork.__init__(self,listen_address,client_listen_port,server_listen_port)
 
         self.EnableBroadcast()
@@ -208,7 +208,7 @@ class DhcpClientOld(DhcpNetwork) :
         except socket.error as msg :
             sys.stderr.write( 'pydhcplib.DhcpClient bind error : '+str(msg))
 
-            
+
 
     def BindToAddress(self) :
         try :
@@ -219,9 +219,9 @@ class DhcpClientOld(DhcpNetwork) :
 
 class DhcpServerOld(DhcpNetwork) :
     def __init__(self, listen_address="0.0.0.0", client_listen_port=68,server_listen_port=67) :
-        
+
         DhcpNetwork.__init__(self,listen_address,server_listen_port,client_listen_port)
-        
+
         try :
             self.dhcp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         except socket.error as msg :

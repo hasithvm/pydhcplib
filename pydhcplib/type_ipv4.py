@@ -40,7 +40,7 @@ class ipv4:
             self._ip_long = 0
             self._LongToNumlist()
             self._NumlistToString()
-            
+
         else : raise TypeError('ipv4 init : Valid types are str, list, int or long')
 
     # Convert Long type ip to numlist ip
@@ -80,7 +80,7 @@ class ipv4:
         for each in tmp : 
             if not each.isdigit() : return False
         return True
-    
+
     # return ip string
     def str(self) :
         return self._ip_string

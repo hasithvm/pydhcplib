@@ -120,7 +120,7 @@ DhcpOptions = {'pad':0,
                # Add from RFC 2132 
                'netware_ip_domain_name':62,
                'netware_ip_sub_options':63,
-               
+
                'nis+_domain':64,
                'nis+_servers':65,
                'tftp_server_name':66,
@@ -232,27 +232,27 @@ DhcpOptionsList = ['pad',
                    'impress_server','resource_location_server',
                    'host_name','boot_file','merit_dump_file',
                    'domain_name','swap_server','root_path','extensions_path',
-                   
+
                    # IP layer parameters per host
                    'ip_forwarding','nonlocal_source_rooting',
                    'policy_filter','maximum_datagram_reassembly_size',
                    'default_ip_time-to-live','path_mtu_aging_timeout',
                    'path_mtu_table',
-                   
+
                    # IP layer parameters per interface
                    'interface_mtu','all_subnets_are_local',
                    'broadcast_address','perform_mask_discovery',
                    'mask_supplier','perform_router_discovery',
                    'routeur_solicitation_address','static_route',
-                   
+
                    # link layer parameters per interface
                    'trailer_encapsulation','arp_cache_timeout',
                    'ethernet_encapsulation',
-                   
+
                    # TCP parameters
                    'tcp_default_ttl','tcp_keepalive_interval',
                    'tcp_keepalive_garbage',
-                   
+
                    # Applications and service parameters
                    'nis_domain',
                    'nis_servers',
@@ -275,7 +275,7 @@ DhcpOptionsList = ['pad',
                    'rebinding_time_value',
                    'vendor_class',
                    'client_identifier',
-                   
+
 
                    # adds from RFC 2132,2242
                    'netware_ip_domain_name',

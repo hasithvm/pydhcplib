@@ -32,7 +32,7 @@ class DhcpBasicPacket:
         self.options_data = {}
         self.packet_data[236:240] = MagicCookie
         self.source_address = False
-        
+
     def IsDhcpPacket(self):
         if self.packet_data[236:240] != MagicCookie : return False
         return True
@@ -45,7 +45,7 @@ class DhcpBasicPacket:
                     return False
             return True
         else : return False
-        
+
 
     def DeleteOption(self,name):
         # if name is a standard dhcp field
@@ -74,13 +74,13 @@ class DhcpBasicPacket:
             return self.options_data[name]
 
         return []
-        
+
 
     def SetOption(self,name,value):
 
         # Basic value checking :
         # has value list a correct length
-        
+
         # if name is a standard dhcp field
         if name in DhcpFields :
             if len(value) != DhcpFields[name][1] :
@@ -105,7 +105,7 @@ class DhcpBasicPacket:
                              "32-bits":[4,0,1], "identifier":[0,2,1],
                              "RFC3397":[0,4,1],"none":[0,0,1],"char+":[0,1,1]
                              }
-            
+
             specs = fields_specs[DhcpOptionsTypes[DhcpOptions[name]]]
             length = len(value)
             if (specs[0]!=0 and specs==length) or (specs[1]<=length and length%specs[2]==0):
@@ -135,7 +135,7 @@ class DhcpBasicPacket:
             order[DhcpOptions[each]].append(DhcpOptions[each])
             order[DhcpOptions[each]].append(len(self.options_data[each]))
             order[DhcpOptions[each]] += self.options_data[each]
-            
+
         options = []
 
         for each in sorted(order.keys()) : options += (order[each])
@@ -145,7 +145,7 @@ class DhcpBasicPacket:
         pack_fmt = str(len(packet))+"c"
 
         packet = list(map(chr,packet))
-        
+
         return pack(pack_fmt,*packet)
 
 
@@ -168,7 +168,7 @@ class DhcpBasicPacket:
         while ( self.packet_data[iterator:iterator+4] != MagicCookie and iterator < end_iterator) :
             iterator += 1
         iterator += 4
-        
+
         # parse extended options
 
         while iterator < end_iterator :
@@ -179,7 +179,7 @@ class DhcpBasicPacket:
             elif self.packet_data[iterator] == 255 :
                 self.packet_data = self.packet_data[:240] # base packet length without magic cookie
                 return
-                
+
             elif self.packet_data[iterator] in DhcpOptionsTypes and self.packet_data[iterator]!= 255:
                 opt_len = self.packet_data[iterator+1]
                 opt_first = iterator+1
@@ -190,5 +190,5 @@ class DhcpBasicPacket:
                 iterator += self.packet_data[opt_first] + 2
 
         # cut packet_data to remove options
-        
+
         self.packet_data = self.packet_data[:240] # base packet length with magic cookie

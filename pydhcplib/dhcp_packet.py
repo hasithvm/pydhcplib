@@ -36,7 +36,7 @@ class DhcpPacket(DhcpBasicPacket):
         op = self.packet_data[DhcpFields['op'][0]:DhcpFields['op'][0]+DhcpFields['op'][1]]
         printable_data += "op : " + DhcpFieldsName['op'][str(op[0])] + "\n"
 
-        
+
         for opt in  ['htype','hlen','hops','xid','secs','flags',
                      'ciaddr','yiaddr','siaddr','giaddr','chaddr','sname','file'] :
             begin = DhcpFields[opt][0]
@@ -77,7 +77,7 @@ class DhcpPacket(DhcpBasicPacket):
                 for each in data :
                     if each != 0 : result += chr(each)
                     else : break
-        
+
             elif DhcpOptionsTypes[optnum] == "ipv4" : result = ipv4(data).str()
             elif DhcpOptionsTypes[optnum] == "ipv4+" :
                 for i in range(0,len(data),4) :
@@ -87,7 +87,7 @@ class DhcpPacket(DhcpBasicPacket):
                 if optnum == 55 : # parameter_request_list
                     result = ','.join([DhcpOptionsList[each] for each in data])
                 else : result += str(data)
-                
+
             printable_data += opt + " : " + result + "\n"
 
         return printable_data
@@ -142,14 +142,14 @@ class DhcpPacket(DhcpBasicPacket):
             except ValueError :
                 ip = [0,0,0,0]
             return ip
-        
+
         elif p == 'chaddr' :
             try:
                 value = hwmac(value).list()+[0]*10
             except ValueError as TypeError :
                 value = [0]*16
             return value
-            
+
         elif p == 'sname' :
             return
         elif p == 'file' :
@@ -175,7 +175,7 @@ class DhcpPacket(DhcpBasicPacket):
             try :
                 binary_value = list(map(int,value.split(".")))
             except ValueError : return False
-            
+
         elif option_type == "ipv4+" :
             # this is multiple ip address
             iplist = value.split(",")
@@ -209,15 +209,15 @@ class DhcpPacket(DhcpBasicPacket):
             if value=="False" or value=="false" or value==0 :
                 binary_value = [0]
             else : binary_value = [1]
-            
+
         elif option_type == "string" :
             binary_value = strlist(value).list()
 
         else :
             binary_value = strlist(value).list()
-        
+
         return binary_value
-    
+
     # FIXME: This is called from IsDhcpSomethingPacket, but is this really
     # needed?  Or maybe this testing should be done in
     # DhcpBasicPacket.DecodePacket().
@@ -228,7 +228,7 @@ class DhcpPacket(DhcpBasicPacket):
         if self.IsOption("dhcp_message_type") == False : return False
         if self.GetOption("dhcp_message_type") != type : return False
         return True
-    
+
     def IsDhcpDiscoverPacket(self):
         return self.IsDhcpSomethingPacket([1])
 
@@ -323,7 +323,7 @@ class DhcpPacket(DhcpBasicPacket):
 
     """ Dhcp NACK packet creation """
     def CreateDhcpNackPacketFrom(self,src): # src = request or inform packet
-        
+
         self.SetOption("htype",src.GetOption("htype"))
         self.SetOption("xid",src.GetOption("xid"))
         self.SetOption("flags",src.GetOption("flags"))

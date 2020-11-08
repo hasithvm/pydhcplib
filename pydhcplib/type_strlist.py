@@ -22,7 +22,7 @@ class strlist :
         str_type = type(data)
         self._str = ""
         self._list = []
-        
+
         if str_type == str :
             self._str = data
             for each in range(len(self._str)) :
@@ -62,6 +62,6 @@ class strlist :
     def __cmp__(self,other) :
         if self._str == other : return 0
         return 1
-		    
+
 
 

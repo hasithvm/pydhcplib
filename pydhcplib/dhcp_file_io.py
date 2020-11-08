@@ -30,7 +30,7 @@ class DhcpFileIO() :
 
     def DisableBinaryTransport(self) :
         self.binary = False
-    
+
     def SendDhcpPacketTo(self,packet,forgetthisparameter1=None,forgetthisparameter2=None) :
         if self.filedesc and self.binary :
             self.filedesc.write(packet.EncodePacket())

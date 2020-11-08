@@ -54,7 +54,7 @@ class hwmac:
 
         for twochar in self._hw_string.split(":"):
             self._hw_numlist.append(ord(unhexlify(twochar)))
-            
+
     # Convert NumList type ip to String type ip
     def _NumlistToString(self) :
         self._hw_string = ":".join(map(hexlify,list(map(chr,self._hw_numlist))))
