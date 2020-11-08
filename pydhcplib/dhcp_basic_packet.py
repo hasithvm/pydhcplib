@@ -144,9 +144,9 @@ class DhcpBasicPacket:
         packet.append(255) # add end option
         pack_fmt = str(len(packet))+"c"
 
-        packet = list(map(chr,packet))
+    #    packet = list(map(chr,packet))
 
-        return pack(pack_fmt,*packet)
+        return pack(pack_fmt,bytes(packet, 'utf-8'))
 
 
     # Insert packet in the object
