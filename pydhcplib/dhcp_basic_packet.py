@@ -146,7 +146,7 @@ class DhcpBasicPacket:
 
     #    packet = list(map(chr,packet))
 
-        return packet
+        return bytes(packet)
 
     # Insert packet in the object
     def DecodePacket(self,data,debug=False):
