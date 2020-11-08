@@ -20,7 +20,7 @@ import sys
 import socket
 import select
 from . import dhcp_packet
-import IN
+#import IN
 
 class DhcpNetwork:
     def __init__(self, listen_address="0.0.0.0", listen_port=67, emit_port=68):
@@ -65,7 +65,7 @@ class DhcpNetwork:
 
     def BindToDevice(self) :
         try :
-            self.dhcp_socket.setsockopt(socket.SOL_SOCKET,IN.SO_BINDTODEVICE,self.listen_address+'\0')
+            self.dhcp_socket.setsockopt(socket.SOL_SOCKET,25,self.listen_address+'\0')
         except socket.error as msg :
             sys.stderr.write ('pydhcplib.DhcpNetwork.BindToDevice error in setsockopt SO_BINDTODEVICE : '+str(msg))
 
